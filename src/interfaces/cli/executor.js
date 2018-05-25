@@ -20,7 +20,7 @@ const executor = (command, subCommand, options) => {
   var errors = null;
   var response = null;
 
-  execute(subCommand, options).then((err, resp) => {
+  execute(config, subCommand, options).then((err, resp) => {
     errors = err;
     response = resp;
   });
