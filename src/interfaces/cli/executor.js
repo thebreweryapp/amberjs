@@ -14,7 +14,7 @@ const loadConfig = (command) => {
 
 
 const executor = (command, subCommand, options) => {
-  const { config } = loadConfig(command);
+  const config = loadConfig(command);
   const execute = require(config.execPath);
 
   var errors = null;

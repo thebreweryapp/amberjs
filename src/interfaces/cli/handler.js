@@ -13,11 +13,11 @@ const command = commands[0];
 const subCommand = commands[1];
 
 /* eslint-disable no-console */  
-executor.execute(command, subCommand, options).then((errors, response) => {
+executor.execute(command, subCommand, options).then((res) => {
 
-  if(errors) {
+  if(res.errors) {
     var errorMessage = '';
-    errors.foreach((error) => {
+    res.errors.foreach((error) => {
       errorMessage += error + '\n';
     });
 
@@ -27,7 +27,7 @@ executor.execute(command, subCommand, options).then((errors, response) => {
     `);
 
   } else {
-    console.log(response);
+    console.log(res.response);
   }
 }).catch((e) => {
   console.log(e);
