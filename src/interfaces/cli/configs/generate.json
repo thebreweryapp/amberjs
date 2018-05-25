@@ -1,0 +1,36 @@
+{
+    "command": "generate",
+    "description": "Initialize and download framework",
+    "usage": "brewery generate --options",
+    "sub-commands": {
+        "subcommand1": {
+            "description": "subcommand1 description",
+            "usage": "brewery generate:subcommand1 --options",
+            "options": {
+                "--exampleOption": {
+                    "description": "example option description"
+                },
+                "--exampleOption2": {
+                    "description": "example option description"
+                },
+                "--exampleOption3": {
+                    "description": "example option description"
+                }
+            },
+            "defaultOptions": ["--exampleOption", "exampleOption1"],
+        }
+    },
+    "options": {
+        "--exampleOption": {
+            "description": "example option description"
+        },
+        "--exampleOption2": {
+            "description": "example option description"
+        },
+        "--exampleOption3": {
+            "description": "example option description"
+        }
+    },
+    "defaultOptions": ["--exampleOption", "exampleOption1"],
+    "execPath": "./execute/generate.js"
+}
