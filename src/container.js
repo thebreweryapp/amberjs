@@ -21,9 +21,8 @@ const devErrorHandler = require('./interfaces/http/errors/devErrorHandler');
 const swaggerMiddleware = require('./interfaces/http/swagger/swaggerMiddleware');
 
 const logger = require('./infra/logging/logger');
-const SequelizeUsersRepository = require('./infra/user/SequelizeUsersRepository');
-const { database, User: UserModel } = require('./infra/database/models');
-
+const repositories = require('./infra/repositories');
+const { database, models } = require('./infra/database/models');
 const container = createContainer();
 
 // System
@@ -50,15 +49,11 @@ container
   });
 
 // Repositories
-container.registerClass({
-  usersRepository: [SequelizeUsersRepository, { lifetime: Lifetime.SINGLETON }]
-});
+container.registerClass(repositories);
 
 // Database
-container.registerValue({
-  database,
-  UserModel
-});
+container.registerValue(models);
+container.registerValue({database});
 
 // Operations
 container.registerClass({

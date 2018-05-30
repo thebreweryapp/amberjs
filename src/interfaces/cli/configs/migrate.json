@@ -32,5 +32,5 @@
         }
     },
     "defaultOptions": ["--exampleOption", "exampleOption1"],
-    "execPath": "./execute/migrate.js"
+    "execPath": "./actions/migrate/"
 }

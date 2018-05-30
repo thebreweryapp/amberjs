@@ -1,34 +1,75 @@
-#!/usr/bin/env node
+#!/usr/bin/env NODE_PATH=. node
 
 const executor = require('./executor.js');
 
 // Grab provided args
 const [,, ...args] = process.argv;
 
-
-const commands = args[0].split(':');
-const [,,, ...options] = process.argv;
-
-const command = commands[0];
-const subCommand = commands[1];
+const { command, subCommand, rootOption } = argumentParser(args);
 
 /* eslint-disable no-console */  
-executor.execute(command, subCommand, options).then((res) => {
+executor(command, subCommand, rootOption);
 
-  if(res.errors) {
-    var errorMessage = '';
-    res.errors.foreach((error) => {
-      errorMessage += error + '\n';
-    });
+function argumentParser(args) {
+  var command = {
+    name: null,
+    options: {},
+    value: null
+  };
+  var subCommand = {
+    name: null,
+    options: {},
+    value: null
+  };
 
-    console.log(`
-      An error has occured while executing the command
-      ${errorMessage}
-    `);
+  var rootOption = null;
 
+  var options = [];
+  var value = null;
+
+  args.forEach((val, index) => {
+    if(index === 0) {
+      if(val.substring(0, 2) == '--'){
+        // value is a root option
+        rootOption = val;
+      } else {
+        // value is a command
+        command.name = val.split(':')[0];
+        subCommand.name = val.split(':')[1];
+      }
+    } else {
+      if(val.substring(0, 2) == '--'){ 
+        // argument is an option
+        options.push({
+          name: val.split('=')[0],
+          value: val.split('=')[1]
+        });
+      } else {
+        // argument is a value
+        if (index === 1){
+          value = val;
+        } else {
+          // error invalid argument
+          throw new Error(`Invalid argument "${val}"`);
+        }
+      }
+    }
+
+
+    
+  });
+
+  if (subCommand.name) {
+    subCommand.options = options;
+    subCommand.value = value;
   } else {
-    console.log(res.response);
+    command.options = options;
+    command.value = value;
   }
-}).catch((e) => {
-  console.log(e);
-});
+
+  return {
+    command,
+    subCommand,
+    rootOption
+  };
+}

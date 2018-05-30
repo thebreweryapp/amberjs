@@ -1,6 +1,6 @@
-const UserMapper = require('./SequelizeUserMapper');
+const UserMapper = require('./mappers/SequelizeUserMapper');
 
-class SequelizeUsersRepository {
+class UserRepository {
   constructor({ UserModel }) {
     this.UserModel = UserModel;
   }
@@ -88,4 +88,4 @@ class SequelizeUsersRepository {
   }
 }
 
-module.exports = SequelizeUsersRepository;
+module.exports = UserRepository;
