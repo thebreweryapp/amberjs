@@ -7,8 +7,8 @@ const init = async(config, command, subCommand) => {
   const questions = [
     {
       type: 'rawlist',
-      name: 'database',
-      message: 'Choose database to use:',
+      name: 'dialect',
+      message: 'Choose database dialect:',
       choices: [
         'mysql',
         'postgres',
@@ -19,17 +19,52 @@ const init = async(config, command, subCommand) => {
     },
     {
       type: 'input',
-      name: 'connString',
-      message: 'Input database connection string'
+      name: 'username',
+      message: 'username:'
+    },
+    {
+      type: 'input',
+      name: 'password',
+      message: 'password:'
+    },
+    {
+      type: 'input',
+      name: 'database',
+      message: 'database/schema name:'
+    },
+    {
+      type: 'input',
+      name: 'host',
+      message: 'host:'
     }
   ];
 
   const answers = await inquirer.prompt(questions);  
+
+  const dbConfig = `
+module.exports = {
+  development: {
+    username:  '${answers.username}',
+    password: '${answers.password}',
+    database: '${answers.database}',
+    host: '${answers.host}',
+    dialect: '${answers.dialect}'
+  },
+  test: {
+    username: '${answers.username}',
+    password: '${answers.password}',
+    database: '${answers.database}',
+    host: '${answers.host}',
+    dialect: '${answers.dialect}',
+    logging: null
+  },
+  production: process.env.DATABASE_URL
+};
+  `;
 	
-  fs.writeFile(`${process.env.PWD}/config/database.js`, lyrics, (err) => {  
+  fs.writeFile(`${process.env.PWD}/config/database.js`, dbConfig, (err) => {  
     if (err) throw err;
-    
-    console.log('Lyric saved!');
+    console.log('Database connection saved!');
   });
 
  
