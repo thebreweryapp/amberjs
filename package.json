@@ -22,9 +22,6 @@
     "pm2": "pm2",
     "cleanup": "node scripts/cleanup.js"
   },
-  "bin": {
-    "brewery": "./src/interfaces/cli/handler.js"
-  },
   "repository": {},
   "author": "Talysson <talyssonoc@gmail.com>",
   "license": "MIT",

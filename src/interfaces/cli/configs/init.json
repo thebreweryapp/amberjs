@@ -1,6 +1,0 @@
-{
-    "command": "init",
-    "description": "Initialize brewery framework",
-    "usage": "brewery init",
-    "execPath": "./actions/init/"
-}
