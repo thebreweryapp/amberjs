@@ -26,6 +26,6 @@ class CreateUser extends Operation {
   }
 }
 
-CreateUser.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR']);
+CreateUser.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
 
 module.exports = CreateUser;

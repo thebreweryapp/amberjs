@@ -19,9 +19,7 @@ module.exports = ({ config, containerMiddleware, loggerMiddleware, errorHandler,
     router.use(loggerMiddleware);
   }
 
-  const apiRouter = Router();
-
-  apiRouter
+  router
     .use(methodOverride('X-HTTP-Method-Override'))
     .use(cors())
     .use(bodyParser.json())
@@ -38,9 +36,7 @@ module.exports = ({ config, containerMiddleware, loggerMiddleware, errorHandler,
    * The `controllerPath` is relative to the `interfaces/http` folder
    */
 
-  apiRouter.use('/users', controller('user/UsersController'));
-
-  router.use('/api', apiRouter);
+  router.use('/api', controller('express-handler'));
 
   router.use(errorHandler);
 
