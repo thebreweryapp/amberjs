@@ -5,7 +5,7 @@ const repositories = {};
 fs
   .readdirSync(`${process.env.PWD}/src/infra/repositories`)
   .filter((file) => {
-    return (file.indexOf('.') !== 0) && (file !== 'index.js') && (file.slice(-3) === '.js');
+    return (file.indexOf('.') !== 0) && (file !== 'index.js') && (file !== 'BaseRepository.js') && (file.slice(-3) === '.js');
   })
   .forEach((file) => {
     const repositoryName = file.split('.')[0];

@@ -5,7 +5,7 @@ const config = require('../config');
 const Application = require('./app/Application');
 const userOperations = require('./app/user');
 
-// const UserSerializer = require('./interfaces/http/user/UserSerializer');
+const serializer = require('./interfaces/http/utils/serializer');
 
 const Server = require('./interfaces/http/Server');
 const router = require('./interfaces/http/router');
@@ -52,9 +52,9 @@ container.registerValue({database});
 // Operations
 container.registerClass(userOperations);
 
-// Serializers
-// container.registerValue({
-//   userSerializer: UserSerializer
-// });
+// serializer
+container.registerValue({
+  serializer
+});
 
 module.exports = container;
