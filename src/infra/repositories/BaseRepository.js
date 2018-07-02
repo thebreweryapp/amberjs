@@ -1,19 +1,19 @@
 class BaseRepository {
-  constructor(model, mapper) {
+  constructor(model, domain) {
     this.model = model;
-    this.mapper = mapper;
+    this.domain = domain;
   }
 
   async getAll(...args) {
     const results = await this.model.findAll(...args);
 
-    return results.map(this.mapper.toEntity);
+    return results.map(result => new this.domain(result));
   }
 
   async getById(id) {
     const result = await this._getById(id);
 
-    return this.mapper.toEntity(result);
+    return new this.domain(result);
   }
 
   async add(entity) {
@@ -26,8 +26,8 @@ class BaseRepository {
       throw error;
     }
 
-    const newEntity = await this.model.create(this.mapper.toDatabase(entity));
-    return this.mapper.toEntity(newEntity);
+    const newEntity = await this.model.create(entity.toJSON());
+    return new this.domain(newEntity);
   }
 
   async remove(id) {
@@ -44,7 +44,7 @@ class BaseRepository {
 
     try {
       const updatedEntity = await entity.update(newData, { transaction });
-      const domainEntity = this.mapper.toEntity(updatedEntity);
+      const domainEntity = new this.domain(updatedEntity);
 
       const { valid, errors } = domainEntity.validate();
 

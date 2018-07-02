@@ -2,9 +2,9 @@ const Operation = require('src/app/Operation');
 const User = require('src/domain/user/User');
 
 class CreateUser extends Operation {
-  constructor({ usersRepository }) {
+  constructor({ userRepository }) {
     super();
-    this.usersRepository = usersRepository;
+    this.usersRepository = userRepository;
   }
 
   async execute(userData) {

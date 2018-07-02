@@ -1,9 +1,9 @@
 const Operation = require('src/app/Operation');
 
 class UpdateUser extends Operation {
-  constructor({ usersRepository }) {
+  constructor({ userRepository }) {
     super();
-    this.usersRepository = usersRepository;
+    this.userRepository = userRepository;
   }
 
   async execute(userId, userData) {
@@ -12,7 +12,7 @@ class UpdateUser extends Operation {
     } = this.outputs;
 
     try {
-      const user = await this.usersRepository.update(userId, userData);
+      const user = await this.userRepository.update(userId, userData);
       this.emit(SUCCESS, user);
     } catch(error) {
       switch(error.message) {

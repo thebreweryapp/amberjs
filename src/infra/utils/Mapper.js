@@ -6,22 +6,12 @@ class Mapper  {
       throw new Error('Domain Entity is required');
     }
 
-    if (!config.entityProps) {
-      throw new Error('Entity properties are required');
-    }
-
-    if (!config.dbProps) {
-      throw new Error('DB model properties are required');
-    }
-
     this.domain = config.domain;
-    this.entityProps = config.entityProps;
-    this.dbProps = config.dbProps;
   }
 
   toEntity(rawData) {
-    const entityProps = this.entityProps;
-    const Domain = this.domain;
+    let entityProps = this.entityProps;
+    let Domain = this.domain;
     
     let data = {
       rawData,

@@ -1,29 +1,25 @@
 const Status = require('http-status');
-const Serializer = require('../utils/serializer');
 
 class BaseController {
 
-  constructor(properties) {
-    this.serialize = new Serializer(properties);
-
+  constructor() {
     // dynamically inject operation based on operation request parameter
     this.injector = operation => (req, res, next) => {
-      req[req.params.operation] = req.container.resolve(operation);
+      req['operation'] = req.container.resolve(operation);
       next();
     };
 
   }
 
-  index(req, res, next) {
+  index(req, res, next) { 
     const { operation } = req;
     const { SUCCESS, ERROR } = operation.outputs;
-
 
     operation
       .on(SUCCESS, (result) => {
         res
           .status(Status.OK)
-          .json(result.map(this.serialize));
+          .json(result);
       })
       .on(ERROR, next);
 
@@ -39,7 +35,7 @@ class BaseController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.OK)
-          .json(this.serialize(result));
+          .json(result);
       })
       .on(NOT_FOUND, (error) => {
         res.status(Status.NOT_FOUND).json({
@@ -60,7 +56,7 @@ class BaseController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.CREATED)
-          .json(this.serialize(result));
+          .json(result);
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({
@@ -81,7 +77,7 @@ class BaseController {
       .on(SUCCESS, (result) => {
         res
           .status(Status.ACCEPTED)
-          .json(this.serialize(result));
+          .json(result);
       })
       .on(VALIDATION_ERROR, (error) => {
         res.status(Status.BAD_REQUEST).json({

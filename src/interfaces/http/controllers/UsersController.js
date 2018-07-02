@@ -4,10 +4,7 @@ const BaseController = require('./BaseController');
 class UsersController extends BaseController {
   
   constructor() {
-    // Define properties to be serialized
-    const properties = ['id', 'name'];
-    super(properties);
-
+    super();
     const router = Router();
     
     router.get('/', this.injector('getAllUsers'), this.index);
@@ -18,6 +15,8 @@ class UsersController extends BaseController {
 
     return router;
   }
+
+  
 
 
 

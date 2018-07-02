@@ -3,7 +3,7 @@ const Operation = require('src/app/Operation');
 class DeleteUser extends Operation {
   constructor({ userRepository }) {
     super();
-    this.usersRepository = userRepository;
+    this.userRepository = userRepository;
   }
 
   async execute(userId) {
