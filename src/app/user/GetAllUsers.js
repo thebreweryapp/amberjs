@@ -1,16 +1,16 @@
 const Operation = require('src/app/Operation');
 
 class GetAllUsers extends Operation {
-  constructor({ usersRepository }) {
+  constructor({ userRepository }) {
     super();
-    this.usersRepository = usersRepository;
+    this.userRepository = userRepository;
   }
 
   async execute() {
     const { SUCCESS, ERROR } = this.outputs;
 
     try {
-      const users = await this.usersRepository.getAll({
+      const users = await this.userRepository.getAll({
         attributes: ['id', 'name']
       });
 
@@ -21,6 +21,6 @@ class GetAllUsers extends Operation {
   }
 }
 
-GetAllUsers.setOutputs(['SUCCESS', 'ERROR']);
+GetAllUsers.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
 
 module.exports = GetAllUsers;

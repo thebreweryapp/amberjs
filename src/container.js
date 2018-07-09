@@ -3,15 +3,9 @@ const { scopePerRequest } = require('awilix-express');
 
 const config = require('../config');
 const Application = require('./app/Application');
-const {
-  CreateUser,
-  GetAllUsers,
-  GetUser,
-  UpdateUser,
-  DeleteUser
-} = require('./app/user');
+const userOperations = require('./app/user');
 
-const UserSerializer = require('./interfaces/http/user/UserSerializer');
+const serializer = require('./interfaces/http/utils/serializer');
 
 const Server = require('./interfaces/http/Server');
 const router = require('./interfaces/http/router');
@@ -21,9 +15,8 @@ const devErrorHandler = require('./interfaces/http/errors/devErrorHandler');
 const swaggerMiddleware = require('./interfaces/http/swagger/swaggerMiddleware');
 
 const logger = require('./infra/logging/logger');
-const SequelizeUsersRepository = require('./infra/user/SequelizeUsersRepository');
-const { database, User: UserModel } = require('./infra/database/models');
-
+const repositories = require('./infra/repositories');
+const { database, models } = require('./infra/database/models');
 const container = createContainer();
 
 // System
@@ -50,28 +43,18 @@ container
   });
 
 // Repositories
-container.registerClass({
-  usersRepository: [SequelizeUsersRepository, { lifetime: Lifetime.SINGLETON }]
-});
+container.registerClass(repositories);
 
 // Database
-container.registerValue({
-  database,
-  UserModel
-});
+container.registerValue(models);
+container.registerValue({database});
 
 // Operations
-container.registerClass({
-  createUser: CreateUser,
-  getAllUsers: GetAllUsers,
-  getUser: GetUser,
-  updateUser: UpdateUser,
-  deleteUser: DeleteUser
-});
+container.registerClass(userOperations);
 
-// Serializers
+// serializer
 container.registerValue({
-  userSerializer: UserSerializer
+  serializer
 });
 
 module.exports = container;

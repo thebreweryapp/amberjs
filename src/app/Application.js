@@ -11,7 +11,11 @@ class Application {
 
   async start() {
     if(this.database) {
-      await this.database.authenticate();
+      try {
+        await this.database.authenticate();
+      } catch (e) {
+        this.logger.error(e);
+      }
     }
 
     await this.server.start();

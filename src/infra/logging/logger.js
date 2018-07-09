@@ -1,7 +1,11 @@
-const Log4js = require('log4js');
+const logger = require('brewery-log');
 
 module.exports = ({ config }) => {
-  Log4js.configure(config.logging);
+  try {
+    logger.initLogger(config.logging);
+  } catch (e) {
+    logger.error(e);
+  }
 
-  return Log4js.getLogger();
+  return logger;
 };
