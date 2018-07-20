@@ -1,3 +1,4 @@
+
 const Operation = require('src/app/Operation');
 
 class DeleteUser extends Operation {
@@ -6,11 +7,11 @@ class DeleteUser extends Operation {
     this.userRepository = userRepository;
   }
 
-  async execute(userId) {
+  async execute(id) {
     const { SUCCESS, ERROR, NOT_FOUND } = this.outputs;
 
     try {
-      await this.userRepository.remove(userId);
+      await this.userRepository.remove(id);
       this.emit(SUCCESS);
     } catch(error) {
       if(error.message === 'NotFoundError') {
@@ -25,3 +26,4 @@ class DeleteUser extends Operation {
 DeleteUser.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
 
 module.exports = DeleteUser;
+    

@@ -1,6 +1,7 @@
+
 const Operation = require('src/app/Operation');
 
-class GetAllUsers extends Operation {
+class ListUsers extends Operation {
   constructor({ userRepository }) {
     super();
     this.userRepository = userRepository;
@@ -10,9 +11,7 @@ class GetAllUsers extends Operation {
     const { SUCCESS, ERROR } = this.outputs;
 
     try {
-      const users = await this.userRepository.getAll({
-        attributes: ['id', 'name']
-      });
+      const users = await this.userRepository.getAll({});
 
       this.emit(SUCCESS, users);
     } catch(error) {
@@ -21,6 +20,7 @@ class GetAllUsers extends Operation {
   }
 }
 
-GetAllUsers.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
+ListUsers.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
 
-module.exports = GetAllUsers;
+module.exports = ListUsers;
+    

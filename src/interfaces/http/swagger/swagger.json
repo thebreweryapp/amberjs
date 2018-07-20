@@ -40,7 +40,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewUser"
+                "$ref": "#/components/schemas/User"
               }
             }
           }
@@ -61,7 +61,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ValidationError"
+                  "$ref": "#/defaultResponses/ValidationError"
                 }
               }
             }
@@ -99,7 +99,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotFoundError"
+                  "$ref": "#/defaultResponses/NotFoundError"
                 }
               }
             }
@@ -125,7 +125,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewUser"
+                "$ref": "#/components/schemas/User"
               }
             }
           }
@@ -146,7 +146,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotFoundError"
+                  "$ref": "#/defaultResponses/NotFoundError"
                 }
               }
             }
@@ -175,7 +175,179 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotFoundError"
+                  "$ref": "#/defaultResponses/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects": {
+      "get": {
+        "operationId": "listProjects",
+        "tags": [ "Projects" ],
+        "responses": {
+          "200": {
+            "description": "List of all projects",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Project"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "createProject",
+        "tags": [ "Projects" ],
+        "requestBody": {
+          "description": "Project data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Project"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Project created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Project not created because of validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/defaultResponses/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/projects/{id}": {
+      "get": {
+        "operationId": "showProject",
+        "tags": [ "Projects" ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of project to show",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Return project with given id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/defaultResponses/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "operationId": "updateProject",
+        "tags": [ "Projects" ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of project to update",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "requestBody": {
+          "description": "Project new data",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Project"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Project updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Project not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/defaultResponses/NotFoundError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteProject",
+        "tags": [ "Projects" ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Id of project to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Project deleted successfully"
+          },
+          "404": {
+            "description": "Project not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/defaultResponses/NotFoundError"
                 }
               }
             }
@@ -184,63 +356,69 @@
       }
     }
   },
+  "defaultResponses": {
+    "ValidationError": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [ "ValidationError" ]
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/defaultResponses/ValidationErrorDetail"
+          }
+        }
+      }
+    },
+    "ValidationErrorDetail": {
+      "properties": {
+        "message": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        }
+      }
+    },
+    "NotFoundError": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [ "NotFoundError" ]
+        },
+        "details": {
+          "type": "string",
+          "enum": [ "User with id {id} not found" ]
+        }
+      }
+    }
+  },
   "components": {
     "schemas": {
       "User": {
-        "allOf": [
-          { "$ref": "#/components/schemas/NewUser" },
-          {
-            "required": [ "id" ],
-            "properties": {
-              "id": {
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "NewUser": {
-        "required": [ "name" ],
         "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Unique Identifier representing a user",
+            "x-primary-key": true
+          },
           "name": {
             "type": "string"
           }
         }
       },
-      "ValidationError": {
+      "Project": {
         "properties": {
-          "type": {
-            "type": "string",
-            "enum": [ "ValidationError" ]
+          "id": {
+            "type": "integer",
+            "format": "int32",
+            "description": "Unique Identifier representing a project",
+            "x-primary-key": true
           },
-          "details": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ValidationErrorDetail"
-            }
-          }
-        }
-      },
-      "ValidationErrorDetail": {
-        "properties": {
-          "message": {
+          "name": {
             "type": "string"
-          },
-          "path": {
-            "type": "string"
-          }
-        }
-      },
-      "NotFoundError": {
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [ "NotFoundError" ]
-          },
-          "details": {
-            "type": "string",
-            "enum": [ "User with id {id} not found" ]
           }
         }
       }
