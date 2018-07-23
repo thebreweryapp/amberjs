@@ -1,10 +1,10 @@
 const { attributes } = require('structure');
 
 const User = attributes({
-  // id: Number,
-  // name: String,
-  // createdAt: Date,
-  // updatedAt: Date,
+  id: Number,
+  name: String,
+  createdAt: Date,
+  updatedAt: Date,
 })(class User {
   // Add validation functions below
   // e.g.:

@@ -16,7 +16,7 @@ const swaggerMiddleware = require('./interfaces/http/swagger/swaggerMiddleware')
 
 const logger = require('./infra/logging/logger');
 const repositories = require('./infra/repositories');
-const { database, models } = require('./infra/database/models');
+const { database, models } = require('./infra/database/models'); console.log(models);
 const container = createContainer();
 
 module.exports = container;
