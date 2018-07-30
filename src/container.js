@@ -1,9 +1,9 @@
+const userOperations = require('./app/user');
 const { createContainer, Lifetime } = require('awilix');
 const { scopePerRequest } = require('awilix-express');
 
 const config = require('../config');
 const Application = require('./app/Application');
-const userOperations = require('./app/user');
 
 const serializer = require('./interfaces/http/utils/serializer');
 
@@ -16,8 +16,10 @@ const swaggerMiddleware = require('./interfaces/http/swagger/swaggerMiddleware')
 
 const logger = require('./infra/logging/logger');
 const repositories = require('./infra/repositories');
-const { database, models } = require('./infra/database/models');
+const { database, models } = require('./infra/database/models'); console.log(models);
 const container = createContainer();
+
+module.exports = container;
 
 // System
 container
@@ -49,12 +51,10 @@ container.registerClass(repositories);
 container.registerValue(models);
 container.registerValue({database});
 
-// Operations
-container.registerClass(userOperations);
-
 // serializer
 container.registerValue({
   serializer
 });
 
-module.exports = container;
+// Operations
+container.registerClass(userOperations);

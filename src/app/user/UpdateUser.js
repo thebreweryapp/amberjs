@@ -1,3 +1,4 @@
+
 const Operation = require('src/app/Operation');
 
 class UpdateUser extends Operation {
@@ -6,13 +7,13 @@ class UpdateUser extends Operation {
     this.userRepository = userRepository;
   }
 
-  async execute(userId, userData) {
+  async execute(id, data) {
     const {
       SUCCESS, NOT_FOUND, VALIDATION_ERROR, ERROR
     } = this.outputs;
 
     try {
-      const user = await this.userRepository.update(userId, userData);
+      const user = await this.userRepository.update(id, data);
       this.emit(SUCCESS, user);
     } catch(error) {
       switch(error.message) {
@@ -29,4 +30,5 @@ class UpdateUser extends Operation {
 
 UpdateUser.setOutputs(['SUCCESS', 'NOT_FOUND', 'VALIDATION_ERROR', 'ERROR']);
 
-module.exports = UpdateUser;
+module.exports = UpdateUser; 
+    
