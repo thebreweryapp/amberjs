@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cat <<EOM >database.js
+cat <<EOM >../config/database.js
 module.exports = {
     development: {
         username: process.env.USERNAME,
