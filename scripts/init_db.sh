@@ -1,12 +1,12 @@
 #!/bin/sh
 
-cat <<EOM >/opt/app-root/src/config/database.js
+cat <<EOM >../config/database.js
 module.exports = {
     development: {
-        username: process.env.DB_USERNAME,
-        password: process.env.DB_PASSWORD,
-        database: process.env.DB_NAME,
-        uri: process.env.DB_URI
+        username: process.env.USERNAME,
+        password: process.env.PASSWORD,
+        database: process.env.DATABASE_NAME,
+        uri: process.env.DATABASE_URI
     },
     test: {
         username: 'root',
