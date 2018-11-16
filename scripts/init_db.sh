@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cat <<EOM >../config/database.js
+cat <<EOM >/opt/app-root/src/config/database.js
 module.exports = {
     development: {
         username: process.env.USERNAME,
