@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo 'Creating database config...'
+
 cat <<EOM >/opt/app-root/src/config/database.js
 module.exports = {
     development: {
@@ -19,3 +21,5 @@ module.exports = {
     production: process.env.DATABASE_URL
 };
 EOM
+
+echo 'Database config successfully created.'
