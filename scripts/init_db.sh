@@ -1,14 +1,12 @@
 #!/bin/sh
 
-echo 'Creating database config...'
-
 cat <<EOM >/opt/app-root/src/config/database.js
 module.exports = {
     development: {
-        username: 'userBAL',
-        password: 'GssAEyjNKHPTST5x',
-        database: 'sampledb',
-        uri: 'postgres://172.30.216.55:5432'
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
+        uri: process.env.DB_URI
     },
     test: {
         username: 'root',
@@ -21,5 +19,3 @@ module.exports = {
     production: process.env.DATABASE_URL
 };
 EOM
-
-echo 'Database config successfully created.'
