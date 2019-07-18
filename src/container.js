@@ -9,14 +9,15 @@ const serializer = require('./interfaces/http/utils/serializer');
 
 const Server = require('./interfaces/http/Server');
 const router = require('./interfaces/http/router');
-const loggerMiddleware = require('./interfaces/http/logging/loggerMiddleware');
+
 const errorHandler = require('./interfaces/http/errors/errorHandler');
 const devErrorHandler = require('./interfaces/http/errors/devErrorHandler');
-const swaggerMiddleware = require('./interfaces/http/swagger/swaggerMiddleware');
 
-const logger = require('./infra/logging/logger');
 const repositories = require('./infra/repositories');
 const { database, models } = require('./infra/database/models');
+
+const { logger, loggerMiddleware, openApiMiddleware } = require('brewery-core');
+
 const container = createContainer();
 
 module.exports = container;
@@ -36,12 +37,12 @@ container
 // Middlewares
 container
   .registerFunction({
-    loggerMiddleware: [loggerMiddleware, { lifetime: Lifetime.SINGLETON }]
+    loggerMiddleware: [loggerMiddleware, { lifetime: Lifetime.SINGLETON }],
+    openApiMiddleware: [openApiMiddleware]
   })
   .registerValue({
     containerMiddleware: scopePerRequest(container),
     errorHandler: config.production ? errorHandler : devErrorHandler,
-    swaggerMiddleware: [swaggerMiddleware]
   });
 
 // Repositories

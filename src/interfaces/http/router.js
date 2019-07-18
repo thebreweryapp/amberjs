@@ -6,8 +6,9 @@ const compression = require('compression');
 const methodOverride = require('method-override');
 const controller = require('./utils/createControllerRoutes');
 const path = require('path');
+const openApiDoc = require('./openApi/openApi.json');
 
-module.exports = ({ config, containerMiddleware, loggerMiddleware, errorHandler, swaggerMiddleware }) => {
+module.exports = ({ config, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
 
   /* istanbul ignore if */
@@ -28,7 +29,7 @@ module.exports = ({ config, containerMiddleware, loggerMiddleware, errorHandler,
     .use(bodyParser.json())
     .use(compression())
     .use(containerMiddleware)
-    .use('/docs', swaggerMiddleware);
+    .use('/docs', openApiMiddleware(openApiDoc));
 
   /*
    * Add your API routes here

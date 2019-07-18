@@ -1,5 +1,4 @@
-
-const Operation = require('src/app/Operation');
+const { Operation } = require('brewery-core');
 
 class DeleteUser extends Operation {
   constructor({ userRepository }) {
