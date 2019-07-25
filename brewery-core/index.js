@@ -2,6 +2,8 @@
 const Operation = require('./app/Operation');
 
 /** infra libs */
+const DataSource = require('./infra/DataSource');
+const Model = require('./infra/repositories/Model');
 const BaseRepository = require('./infra/repositories/BaseRepository');
 const openApiMiddleware = require('./infra/openApi/openApiMiddleware');
 
@@ -15,5 +17,7 @@ module.exports = {
   BaseRepository,
   logger,
   loggerMiddleware,
-  openApiMiddleware
+  openApiMiddleware,
+  DataSource,
+  Model
 };

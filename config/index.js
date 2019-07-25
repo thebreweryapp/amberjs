@@ -6,28 +6,18 @@ const path = require('path');
 const ENV = process.env.NODE_ENV || 'development';
 const PORT = process.env.PORT || 8080;
 
-const dbConfig = loadDbConfig();
 const logConfig = loadLogConfig();
+const dataSources = require('./dataSources.json');
 
 const config = Object.assign({
   [ENV]: true,
   env: ENV,
   web: { port: PORT },
-  db: dbConfig,
   logging: logConfig,
+  dataSources
 });
 
 module.exports = config;
-
-function loadDbConfig() {
-  if(process.env.DATABASE_URL) {
-    return process.env.DATABASE_URL;
-  }
-
-  if(fs.existsSync(path.join(__dirname, './database.js'))) {
-    return require('./database')[ENV];
-  }
-}
 
 function loadLogConfig() {
   if(fs.existsSync(path.join(__dirname, './logging.js'))) {
