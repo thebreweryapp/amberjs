@@ -1,7 +1,6 @@
-const { Model } = require('brewery-core');
-
-const userSchema = {
+const User = {
   name: 'User',
+  dataSource: 'db',
   properties: {
     id: {
       type: Number
@@ -14,13 +13,17 @@ const userSchema = {
     }
   },
   relations: {
-    
+    type: 'belongsTo',
+    model: 'Group',
+    foreignKey: 'groupId'
   }
 };
 
+module.exports = User;
 
-module.exports = ({ dbDataSource }) => {
-  class UserModel extends Model{}
-  UserModel.init(userSchema, dbDataSource);
-  return UserModel;
-};
+
+// module.exports = ({ dbDataSource }) => {
+//   class UserModel extends Model{}
+//   UserModel.init(userSchema, dbDataSource);
+//   return UserModel;
+// };
