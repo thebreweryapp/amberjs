@@ -73,6 +73,6 @@ const modelDecorator = (breweryModel) => {
 
 
 
-const SqlConnector = ConnectorFactory(initialize, connect, disconnect, modelDecorator);
+const SqlConnector = ConnectorFactory('sql', initialize, connect, disconnect, modelDecorator);
 
 module.exports = SqlConnector;

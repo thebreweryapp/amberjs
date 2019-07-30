@@ -11,10 +11,11 @@ const BaseConnector = require('../BaseConnector');
  * 
  * @return {Object} the connector class
  */
-const ConnectorFactory = (initialize, connect, disconnect = () => {}, modelDecorator, customMethods = []) => {
+const ConnectorFactory = (name, initialize, connect, disconnect = () => {}, modelDecorator, customMethods = []) => {
   
   
   const Connector = Object.create(BaseConnector);
+  Connector.name = name;
   Connector.initialize = initialize;
   Connector.connect = connect;
   Connector.disconnect = disconnect;

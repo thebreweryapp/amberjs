@@ -1,4 +1,4 @@
-const User = {
+module.exports = {
   name: 'User',
   dataSource: 'db',
   properties: {
@@ -18,12 +18,3 @@ const User = {
     foreignKey: 'groupId'
   }
 };
-
-module.exports = User;
-
-
-// module.exports = ({ dbDataSource }) => {
-//   class UserModel extends Model{}
-//   UserModel.init(userSchema, dbDataSource);
-//   return UserModel;
-// };

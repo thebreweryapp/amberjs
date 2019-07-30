@@ -1,9 +1,12 @@
-{
-  "dbSql": {
+[
+  {
+    "name": "dbSql",
     "connector" : "sql",
-    "host" : "127.0.0.1",
-    "user": "root",
-    "password": "",
-    "database": "brewery"
+    "config": {
+      "host" : "127.0.0.1",
+      "user": "root",
+      "password": "",
+      "database": "brewery"
+    }
   }
-}
+]
