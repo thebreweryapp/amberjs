@@ -1,0 +1,16 @@
+{
+  "app": [
+    "src/app"
+  ],
+  "dataSources":[
+    "src/infra/dataSources"
+  ],
+  "models":[
+    "src/infra/models"
+  ],
+  "repositories": [
+    "src/infra/repositrories"
+  ],
+  "server": "src/interfaces/Server.js",
+  "router": "src/interfaces/router.js"
+}

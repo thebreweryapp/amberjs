@@ -1,6 +1,6 @@
 
 const { Router } = require('express');
-const BaseController = require('./BaseController');
+const { BaseController } = require('brewery-core');
 
 class UsersController extends BaseController {
   
