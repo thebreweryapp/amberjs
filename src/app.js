@@ -1,6 +1,11 @@
 const { brew } = require('brewery-core');
-const config = require('app-config.json');
+const config = require('config');
 
-const app = brew(config);
+const { server } = brew(config);
 
-module.exports = app;
+server
+  .start()
+  .catch((error) => {
+    server.logger.error(error.stack);
+    process.exit();
+  });

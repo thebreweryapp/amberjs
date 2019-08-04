@@ -11,10 +11,10 @@ const {
 
 const fs = require('fs');
 const path = require('path');
-const inflection = require('inflection');
 const dataSourceFactory = require('./factories/dataSourceFactory');
 const modelFactory = require('./factories/modelFactory');
 const logger = require('./logger');
+const server = require('./server');
 
 
 /**
@@ -22,15 +22,30 @@ const logger = require('./logger');
  * @param {Array} sources 
  * @return {Array}
  */
-const configLoader = (sources) => {
-  return sources.reduce((configs, sourceDir) => {
+const filesLoader = (sources) => {
+  return sources.reduce((acc, sourceDir) => {
     fs.readdirSync(sourceDir)
       .forEach((file) => {
         const config = require(path.join(sourceDir, file));
-        configs.push(config);
-        return configs;
+        acc.push(config);
+        return acc;
       });
   }, []); 
+};
+
+/**
+ * Loads middlwares from directories
+ * @param {Array} sources 
+ * @return {Array}
+ */
+const middlewaresLoader = (sources) => {
+  return sources.reduce((acc, sourceDir) => {
+    fs.readdirSync(sourceDir)
+      .forEach((file) => {
+        acc[file] = require(path.join(sourceDir, file));
+        return acc;
+      });
+  }, {}); 
 };
 
 
@@ -91,8 +106,6 @@ const buildRepositories = (dir) => {
 };
 
 
-
-
 /**
  * 
  * @param {Object} config
@@ -103,12 +116,11 @@ const buildRepositories = (dir) => {
  */
 const brew = (config) => {
 
-  const server = require(config.server);
   const router = require(config.router);
 
   
-  const dataSourceConfigs = configLoader(config.dataSources);
-  const modelConfigs = configLoader(config.models);
+  const dataSourceConfigs = filesLoader(config.dataSources);
+  const modelConfigs = filesLoader(config.models);
   
   // build dataSources
   const dataSources = buildDataSources(dataSourceConfigs);
@@ -116,6 +128,9 @@ const brew = (config) => {
   const models = buildModels(modelConfigs, dataSources);
   // build repositories
   const repositories = buildRepositories(config.repositories);
+
+  // load middlewares
+  const middlewares = middlewaresLoader(config.middlewares);
 
 
   // Create DI Container
@@ -131,38 +146,24 @@ const brew = (config) => {
     })
 
   // Middlewares
-    .register({
-      loggerMiddleware: asFunction(loggerMiddleware, { lifetime: Lifetime.SINGLETON }),
-      containerMiddleware: asValue(scopePerRequest(container)),
-      errorHandler: asValue(config.production ? errorHandler : devErrorHandler),
-      swaggerMiddleware: asValue([swaggerMiddleware])
-    })
+    .register(middlewares)
 
   // dataSources
-    .register({
-      dataSources: dataSources.reduce((acc, val) => {
-        acc[val.name] = asClass(val);
-        return acc;
-      }, {})
-    })
+    .register(dataSources)
   
   // Models
-    .register({
-      models: models.reduce((acc, val) => {
-        acc[val.name] = asClass(val);
-        return acc;
-      }, {})
-    })
+    .register(models)
 
   // Repositories
-    .register({
-      repositories : repositories.reduc
-    })
+    .register(repositories);
+
+  // use cases
 
 
-
-
-
+  return {
+    container,
+    server: container.resolve('server')
+  };
 };
 
 module.exports = brew;
