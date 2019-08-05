@@ -2,20 +2,12 @@ module.exports = {
   name: 'node-api-boilerplate',
   env: process.env.NODE_ENV,
   debug: process.env.DEBUG,
-  app: [
-    'src/app'
-  ],
-  dataSources: [
-    'src/infra/dataSources'
-  ],
-  models: [
-    'src/infra/models'
-  ],
-  repositories: [
-    'src/infra/repositories'
-  ],
-  middlewares: [
-    'src/interfaces/http/middlewares'
-  ],
-  router: 'src/interfaces/router.js'
+  sources: { 
+    app: [ 'src/app'],
+    dataSource: ['src/infra/dataSources'],
+    model: ['src/infra/models'],
+    repository: ['src/infra/repositories'],
+    middleware: ['src/interfaces/http/middlewares'],
+    router: 'src/interfaces/http/router.js'
+  }
 };

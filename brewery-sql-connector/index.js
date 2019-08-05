@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const { ConnectorFactory } = require('brewery-core');
+const { connectorFactory } = require('brewery-core');
 const sequelizeModelBuilder = require('./sequelizeModelBuilder');
 const configValidator = require('./configValidator');
 
@@ -73,6 +73,6 @@ const modelDecorator = (breweryModel) => {
 
 
 
-const SqlConnector = ConnectorFactory('sql', initialize, connect, disconnect, modelDecorator);
+const SqlConnector = connectorFactory('sql', initialize, connect, disconnect, modelDecorator);
 
 module.exports = SqlConnector;

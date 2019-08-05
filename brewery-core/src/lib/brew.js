@@ -9,6 +9,8 @@ const {
   asValue,
 } = require('awilix');
 
+const { scopePerRequest } = require('awilix-express');
+
 const fs = require('fs');
 const path = require('path');
 const dataSourceFactory = require('./factories/dataSourceFactory');
@@ -16,36 +18,58 @@ const modelFactory = require('./factories/modelFactory');
 const logger = require('./logger');
 const server = require('./server');
 
-
 /**
- * Loads configs from directories
- * @param {Array} sources 
- * @return {Array}
+ * Reads files in a directory recursively and 
+ * stores in an object with the file name as key
+ * 
+ * @param {String} sourceDir 
+ * @param {Object} files 
  */
-const filesLoader = (sources) => {
-  return sources.reduce((acc, sourceDir) => {
-    fs.readdirSync(sourceDir)
-      .forEach((file) => {
-        const config = require(path.join(sourceDir, file));
-        acc.push(config);
-        return acc;
-      });
-  }, []); 
+const recursiveReadObj = (sourceDir, files = {}) => {
+  fs.readdirSync(sourceDir).forEach(file => {
+    files = fs.statSync(path.join(sourceDir, file)).isDirectory()
+      ? recursiveReadObj(path.join(sourceDir, file), files)
+      : files[file] = require(path.join(sourceDir, file));
+
+  });
+  return files;
 };
 
+
 /**
- * Loads middlwares from directories
+ * Reads files in a directory recursively and 
+ * stores in an Array
+ * 
+ * @param {String} sourceDir 
+ * @param {Object} files 
+ */
+const recursiveReadArr = (sourceDir, files = []) => {
+  fs.readdirSync(sourceDir).forEach(file => {
+    fs.statSync(path.join(sourceDir, file)).isDirectory()
+      ? recursiveReadObj(path.join(sourceDir, file), files)
+      : files.push(require(path.join(sourceDir, file)));
+
+  });
+  return files;
+};
+
+
+/**
+ * reads files from directories
  * @param {Array} sources 
  * @return {Array}
  */
-const middlewaresLoader = (sources) => {
+const readFiles = (sources, obj = true) => {
+  let reader = recursiveReadArr;
+  let accumulator = [];
+  if(obj) {
+    reader = recursiveReadObj;
+    accumulator = {};
+  }
+
   return sources.reduce((acc, sourceDir) => {
-    fs.readdirSync(sourceDir)
-      .forEach((file) => {
-        acc[file] = require(path.join(sourceDir, file));
-        return acc;
-      });
-  }, {}); 
+    return reader(sourceDir, acc);
+  }, accumulator); 
 };
 
 
@@ -69,7 +93,7 @@ const buildDataSources = (dataSourceConfigs) => {
  * @return {Object}
  */
 const buildModels = (modelConfigs, dataSources) => {
-
+  
   /** create object with dataSource name as key */
   const dataSourcesObj = dataSources.reduce((acc, val) => {
     if(val.name in acc) {
@@ -91,21 +115,6 @@ const buildModels = (modelConfigs, dataSources) => {
   return models;
 };
 
-
-const buildRepositories = (dir) => {
-  const repositories = {};
-  fs
-    .readdirSync(`${process.env.PWD}/${dir}`)
-    .forEach((file) => {
-      const repositoryName = file.split('.')[0];
-      const repository = require(`./${file}`);
-      repositories[repositoryName.replace(/^./, f => f.toLowerCase())] = [repository, { lifetime: Lifetime.SINGLETON }];
-    });
-
-  return repositories;
-};
-
-
 /**
  * 
  * @param {Object} config
@@ -116,21 +125,26 @@ const buildRepositories = (dir) => {
  */
 const brew = (config) => {
 
-  const router = require(config.router);
+  const { sources } = config.app;
+
+  const router = require(sources.router);
 
   
-  const dataSourceConfigs = filesLoader(config.dataSources);
-  const modelConfigs = filesLoader(config.models);
-  
+  const dataSourceConfigs = readFiles(sources.dataSource, false);
+  const modelConfigs = readFiles(sources.model, false);
+
   // build dataSources
   const dataSources = buildDataSources(dataSourceConfigs);
   //  build models
   const models = buildModels(modelConfigs, dataSources);
-  // build repositories
-  const repositories = buildRepositories(config.repositories);
-
+  // load repositories
+  const repositories = readFiles(sources.repository);
   // load middlewares
-  const middlewares = middlewaresLoader(config.middlewares);
+  const middlewares = readFiles(sources.middleware);
+  // load use cases
+  const useCases = readFiles(sources.app);
+  
+
 
 
   // Create DI Container
@@ -145,9 +159,6 @@ const brew = (config) => {
       config: asValue(config),
     })
 
-  // Middlewares
-    .register(middlewares)
-
   // dataSources
     .register(dataSources)
   
@@ -155,9 +166,22 @@ const brew = (config) => {
     .register(models)
 
   // Repositories
-    .register(repositories);
+    .register(Object.keys(repositories).reduce((acc, val) => {
+      acc[val] = asClass(repositories[val], { lifetime: Lifetime.SINGLETON });
+      return acc;
+    }, {}))
+
+  // Middlewares
+    .register({
+      containerMiddleware: asValue(scopePerRequest(container)),
+      loggerMiddleware: asFunction()
+    })
 
   // use cases
+    .register(Object.keys(useCases).reduce((acc, val) => {
+      acc[val] = asClass(useCases[val]);
+      return acc;
+    }, {}));
 
 
   return {
