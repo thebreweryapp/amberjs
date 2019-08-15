@@ -1,16 +1,16 @@
 const { Event } = require('brewery-core');
 
 class ListUsers extends Event {
-  constructor({ userRepository }) {
+  constructor({ UserRepository }) {
     super();
-    this.userRepository = userRepository;
+    this.userRepository = UserRepository;
   }
 
   async execute() {
     const { SUCCESS, ERROR } = this.outputs;
 
     try {
-      const users = await this.userRepository.getAll({});
+      const users = await this.UserRepository.getAll({});
 
       this.emit(SUCCESS, users);
     } catch(error) {

@@ -1,16 +1,16 @@
 const { Event } = require('brewery-core');
 
 class DeleteUser extends Event {
-  constructor({ userRepository }) {
+  constructor({ UserRepository }) {
     super();
-    this.userRepository = userRepository;
+    this.userRepository = UserRepository;
   }
 
   async execute(id) {
     const { SUCCESS, ERROR, NOT_FOUND } = this.outputs;
 
     try {
-      await this.userRepository.remove(id);
+      await this.UserRepository.remove(id);
       this.emit(SUCCESS);
     } catch(error) {
       if(error.message === 'NotFoundError') {

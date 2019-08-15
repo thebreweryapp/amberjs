@@ -114,7 +114,7 @@ const brew = (config) => {
   // load use cases
   const useCases = readFiles(sources.app);
   
-
+console.log(dataSources);
 
 
   // Create DI Container

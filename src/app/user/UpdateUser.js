@@ -1,9 +1,9 @@
 const { Event } = require('brewery-core');
 
 class UpdateUser extends Event {
-  constructor({ userRepository }) {
+  constructor({ UserRepository }) {
     super();
-    this.userRepository = userRepository;
+    this.userRepository = UserRepository;
   }
 
   async execute(id, data) {
@@ -12,7 +12,7 @@ class UpdateUser extends Event {
     } = this.outputs;
 
     try {
-      const user = await this.userRepository.update(id, data);
+      const user = await this.UserRepository.update(id, data);
       this.emit(SUCCESS, user);
     } catch(error) {
       switch(error.message) {
