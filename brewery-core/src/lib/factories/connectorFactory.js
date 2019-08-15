@@ -11,7 +11,7 @@ const BaseConnector = require('../BaseConnector');
  * 
  * @return {Object} the connector class
  */
-const connectorFactory = (name, initialize, connect, disconnect = () => {}, modelDecorator, customMethods = []) => {
+const connectorFactory = (name, initialize, connect, disconnect = () => {}) => {
   
   
   const Connector = Object.create(BaseConnector);
@@ -19,8 +19,6 @@ const connectorFactory = (name, initialize, connect, disconnect = () => {}, mode
   Connector.initialize = initialize;
   Connector.connect = connect;
   Connector.disconnect = disconnect;
-  Connector.modelDecorator = modelDecorator;
-  Connector.setCustomMethods(customMethods);
 
   return Connector;
 };

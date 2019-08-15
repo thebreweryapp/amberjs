@@ -1,7 +1,7 @@
-const { Operation } = require('brewery-core');
+const { Event } = require('brewery-core');
 const User = require('src/domain/User');
 
-class CreateUser extends Operation {
+class CreateUser extends Event {
   constructor({ userRepository }) {
     super();
     this.userRepository = userRepository;
@@ -26,7 +26,7 @@ class CreateUser extends Operation {
   }
 }
 
-CreateUser.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
+CreateUser.setEvents(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
 
 module.exports = CreateUser;
     

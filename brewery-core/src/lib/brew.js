@@ -14,7 +14,6 @@ const { scopePerRequest } = require('awilix-express');
 const fs = require('fs');
 const path = require('path');
 const dataSourceFactory = require('./factories/dataSourceFactory');
-const modelFactory = require('./factories/modelFactory');
 const logger = require('./logger');
 const server = require('./server');
 
@@ -85,35 +84,6 @@ const buildDataSources = (dataSourceConfigs) => {
   }, []);
 };
 
-/**
- * Build model instances using modelConfig and their corresponding dataSource
- * @param {Object} modelConfigs 
- * @param {Array} dataSources 
- * 
- * @return {Object}
- */
-const buildModels = (modelConfigs, dataSources) => {
-  
-  /** create object with dataSource name as key */
-  const dataSourcesObj = dataSources.reduce((acc, val) => {
-    if(val.name in acc) {
-      throw new Error(`DataSource '${val.name} already exists'`);
-    }
-    acc[val.name] = val;
-    return acc;
-  }, {});
-
-  const models = modelConfigs.map((modelConfig) => {
-    const dataSourceName = modelConfig.dataSource;
-
-    if(!(modelConfig.dataSource in dataSourcesObj)){
-      throw new Error(`DataSource '${dataSourceName}' in model '${modelConfig.name}' doesn't exist`);
-    }
-    return modelFactory(modelConfig, dataSourcesObj[dataSourceName]);
-  });
-
-  return models;
-};
 
 /**
  * 
@@ -131,12 +101,11 @@ const brew = (config) => {
 
   
   const dataSourceConfigs = readFiles(sources.dataSource, false);
-  const modelConfigs = readFiles(sources.model, false);
 
   // build dataSources
   const dataSources = buildDataSources(dataSourceConfigs);
   //  build models
-  const models = buildModels(modelConfigs, dataSources);
+  const models = readFiles(sources.model, false);
   // load repositories
   const repositories = readFiles(sources.repository);
   // load middlewares

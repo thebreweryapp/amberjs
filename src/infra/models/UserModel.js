@@ -1,20 +1,15 @@
-module.exports = {
-  name: 'User',
-  dataSource: 'db',
-  properties: {
-    id: {
-      type: Number
+
+module.exports = ({ DbDataSource }) => {
+  return DbDataSource.define('Users', {
+    id : {
+      primaryKey: true,
+      autoIncrement: true,
+      type: DbDataSource.INTEGER,
+    }, name : {
+      type: DbDataSource.STRING,
     },
-    firstName: {
-      type: String
-    },
-    lastName: {
-      type: String
-    }
-  },
-  relations: {
-    type: 'belongsTo',
-    model: 'Group',
-    foreignKey: 'groupId'
-  }
+  }, {
+    tableName: 'Users',
+    timestamps: true
+  });
 };

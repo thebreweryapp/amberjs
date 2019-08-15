@@ -3,14 +3,20 @@
  */
 const connectorFactory = require('./src/lib/factories/connectorFactory');
 const dataSourceFactory = require('./src/lib/factories/dataSourceFactory');
-const modelFactory = require('./src/lib/factories/modelFactory');
+
+/** BaseRepository */
+const BaseRepository = require('./src/lib/BaseRepository');
+
+/** Event */
+const Event = require('./src/lib/Event');
 
 const brew = require('./src/lib/brew');
 
 
 module.exports = {
+  BaseRepository,
+  Event,
   connectorFactory,
   dataSourceFactory,
-  modelFactory,
   brew
 };

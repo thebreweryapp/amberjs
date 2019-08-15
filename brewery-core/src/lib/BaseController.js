@@ -13,7 +13,7 @@ class BaseController {
 
   index(req, res, next) { 
     const { operation } = req;
-    const { SUCCESS, ERROR } = operation.outputs;
+    const { SUCCESS, ERROR } = operation.events;
 
     operation
       .on(SUCCESS, (result) => {

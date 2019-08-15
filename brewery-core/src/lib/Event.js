@@ -9,12 +9,12 @@ class Event extends EventEmitter {
     });
   }
 
-  on(output, handler) {
-    if(this.outputs[output]) {
-      return this.addListener(output, handler);
+  on(event, handler) {
+    if(this.events[event]) {
+      return this.addListener(event, handler);
     }
 
-    throw new Error(`Invalid output "${output}" to operation ${this.constructor.name}.`);
+    throw new Error(`Invalid event "${event}" to operation ${this.constructor.name}.`);
   }
 }
 

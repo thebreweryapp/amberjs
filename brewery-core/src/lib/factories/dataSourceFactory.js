@@ -1,19 +1,19 @@
-const BaseDataSource = require('../BaseDataSource');
-
 /**
  * 
  * @param {Object} config
  * @property {*} connector instance of type connector or name(string) of connector
  * @property 
  */
-const dataSourceFactory = ({ name, connector, config }) => {
+const dataSourceFactory = async({ name, connector, config }) => {
+  const dataSource = connector.initialize(config);
+  try {
+    await connector.connect();
+    console.log(`DataSource ${name} has successfully established connection`);
+  } catch (err) {
+    console.log(`DataSource ${name} has failed to establish connection`);
+  }
 
-  const DataSource = Object.create(BaseDataSource);
-
-  Object.defineProperty(DataSource, 'name', { value: name });
-  DataSource.setConnector(connector, config);
-
-  return DataSource;
+  return dataSource;
 };
 
 module.exports = dataSourceFactory;

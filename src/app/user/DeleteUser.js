@@ -1,6 +1,6 @@
-const { Operation } = require('brewery-core');
+const { Event } = require('brewery-core');
 
-class DeleteUser extends Operation {
+class DeleteUser extends Event {
   constructor({ userRepository }) {
     super();
     this.userRepository = userRepository;
@@ -22,7 +22,7 @@ class DeleteUser extends Operation {
   }
 }
 
-DeleteUser.setOutputs(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
+DeleteUser.setEvents(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
 
 module.exports = DeleteUser;
     
