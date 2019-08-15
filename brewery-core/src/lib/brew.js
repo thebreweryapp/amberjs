@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const dataSourceFactory = require('./factories/dataSourceFactory');
 const logger = require('./logger');
-const server = require('./server');
+const server = require('./Server');
 
 /**
  * Reads files in a directory recursively and 
@@ -26,10 +26,11 @@ const server = require('./server');
  */
 const recursiveReadObj = (sourceDir, files = {}) => {
   fs.readdirSync(sourceDir).forEach(file => {
-    files = fs.statSync(path.join(sourceDir, file)).isDirectory()
-      ? recursiveReadObj(path.join(sourceDir, file), files)
-      : files[file] = require(path.join(sourceDir, file));
-
+    if(fs.statSync(path.join(sourceDir, file)).isDirectory()) {
+      recursiveReadObj(path.join(sourceDir, file), files);
+    } else {
+      files[file.split('.')[0]] = require(path.join(sourceDir, file));
+    }
   });
   return files;
 };
@@ -45,7 +46,7 @@ const recursiveReadObj = (sourceDir, files = {}) => {
 const recursiveReadArr = (sourceDir, files = []) => {
   fs.readdirSync(sourceDir).forEach(file => {
     fs.statSync(path.join(sourceDir, file)).isDirectory()
-      ? recursiveReadObj(path.join(sourceDir, file), files)
+      ? recursiveReadArr(path.join(sourceDir, file), files)
       : files.push(require(path.join(sourceDir, file)));
 
   });
@@ -68,7 +69,7 @@ const readFiles = (sources, obj = true) => {
 
   return sources.reduce((acc, sourceDir) => {
     return reader(sourceDir, acc);
-  }, accumulator); 
+  }, accumulator);
 };
 
 
@@ -97,15 +98,15 @@ const brew = (config) => {
 
   const { sources } = config.app;
 
+  // get router
   const router = require(sources.router);
-
-  
+  // get dataSource configs
   const dataSourceConfigs = readFiles(sources.dataSource, false);
 
   // build dataSources
   const dataSources = buildDataSources(dataSourceConfigs);
   //  build models
-  const models = readFiles(sources.model, false);
+  const models = readFiles(sources.model);
   // load repositories
   const repositories = readFiles(sources.repository);
   // load middlewares
@@ -132,7 +133,10 @@ const brew = (config) => {
     .register(dataSources)
   
   // Models
-    .register(models)
+    .register(Object.keys(models).reduce((acc, val) => {
+      acc[val] = asFunction(models[val], { lifetime: Lifetime.SINGLETON });
+      return acc;
+    }, {}))
 
   // Repositories
     .register(Object.keys(repositories).reduce((acc, val) => {
@@ -140,18 +144,22 @@ const brew = (config) => {
       return acc;
     }, {}))
 
-  // Middlewares
+  // container middleware
     .register({
-      containerMiddleware: asValue(scopePerRequest(container)),
-      loggerMiddleware: asFunction()
+      containerMiddleware: asValue(scopePerRequest(container))
     })
+
+  // middlewares
+    .register(Object.keys(middlewares).reduce((acc, val) => {
+      acc[val] = asValue(middlewares[val]);
+      return acc;
+    }, {}))
 
   // use cases
     .register(Object.keys(useCases).reduce((acc, val) => {
       acc[val] = asClass(useCases[val]);
       return acc;
     }, {}));
-
 
   return {
     container,

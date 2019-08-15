@@ -5,7 +5,6 @@ class Server {
     this.config = config;
     this.logger = logger;
     this.express = express();
-
     this.express.disable('x-powered-by');
     this.express.use(router);
   }
@@ -13,7 +12,7 @@ class Server {
   start() {
     return new Promise((resolve) => {
       const http = this.express
-        .listen(this.config.web.port, () => {
+        .listen(this.config.app.port, () => {
           const { port } = http.address();
           this.logger.info(`[p ${process.pid}] Listening at port ${port}`);
           resolve();

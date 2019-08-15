@@ -11,7 +11,7 @@ class BaseController {
 
   }
 
-  index(req, res, next) { 
+  index(req, res, next) {
     const { operation } = req;
     const { SUCCESS, ERROR } = operation.events;
 

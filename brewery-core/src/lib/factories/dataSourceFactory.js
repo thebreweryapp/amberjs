@@ -8,9 +8,9 @@ const dataSourceFactory = async({ name, connector, config }) => {
   const dataSource = connector.initialize(config);
   try {
     await connector.connect();
-    console.log(`DataSource ${name} has successfully established connection`);
-  } catch (err) {
-    console.log(`DataSource ${name} has failed to establish connection`);
+    console.log(`DataSource ${name} has successfully established connection!`);
+  } catch (err) { console.log(err);
+    console.log(`DataSource ${name} has failed to establish connection!`);
   }
 
   return dataSource;

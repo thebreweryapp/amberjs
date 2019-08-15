@@ -1,10 +1,13 @@
+const sqlConnector = require('brewery-sql-connector');
+
 module.exports = {
   name: 'db',
-  connector : 'sql',
+  connector : sqlConnector,
   config: {
     host : '127.0.0.1',
-    user: 'root',
+    username: 'root',
     password: '',
-    database: 'brewery'
+    database: 'brewery',
+    dialect: 'mysql'
   }
 };
