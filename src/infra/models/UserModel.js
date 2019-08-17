@@ -1,12 +1,13 @@
 
-module.exports = ({ DbDataSource }) => {
-  return DbDataSource.define('Users', {
+module.exports = ({ DbDatasource }) => {
+  const DataTypes = DbDatasource.DataTypes;
+  return DbDatasource.define('Users', {
     id : {
       primaryKey: true,
       autoIncrement: true,
-      type: DbDataSource.INTEGER,
+      type: DataTypes.INTEGER,
     }, name : {
-      type: DbDataSource.STRING,
+      type: DataTypes.STRING,
     },
   }, {
     tableName: 'Users',

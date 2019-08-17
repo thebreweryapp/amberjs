@@ -1,7 +1,7 @@
 const sqlConnector = require('brewery-sql-connector');
 
 module.exports = {
-  name: 'db',
+  name: 'DbDatasource',
   connector : sqlConnector,
   config: {
     host : '127.0.0.1',

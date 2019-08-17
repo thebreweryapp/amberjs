@@ -80,9 +80,9 @@ const readFiles = (sources, obj = true) => {
  */
 const buildDataSources = (dataSourceConfigs) => {
   return dataSourceConfigs.reduce((dataSources, dataSourceConfig) => {
-    dataSources.push(dataSourceFactory(dataSourceConfig));
+    dataSources[dataSourceConfig.name] = (dataSourceFactory(dataSourceConfig));
     return dataSources;
-  }, []);
+  }, {});
 };
 
 
@@ -114,9 +114,6 @@ const brew = (config) => {
   // load use cases
   const useCases = readFiles(sources.app);
   
-console.log(dataSources);
-
-
   // Create DI Container
   const container = createContainer();
 
@@ -130,7 +127,10 @@ console.log(dataSources);
     })
 
   // dataSources
-    .register(dataSources)
+    .register(Object.keys(dataSources).reduce((acc, val) => {
+      acc[val] = asValue(dataSources[val]);
+      return acc;
+    }, {}))
   
   // Models
     .register(Object.keys(models).reduce((acc, val) => {
