@@ -9,7 +9,7 @@ const BaseRepository = require('./src/lib/BaseRepository');
 const BaseController = require('./src/lib/BaseController');
 
 /** Event */
-const Event = require('./src/lib/Event');
+const Operation = require('./src/lib/Operation');
 
 const brew = require('./src/lib/brew');
 
@@ -17,7 +17,7 @@ const brew = require('./src/lib/brew');
 module.exports = {
   BaseRepository,
   BaseController,
-  Event,
+  Operation,
   connectorFactory,
   dataSourceFactory,
   brew

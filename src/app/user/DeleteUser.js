@@ -1,13 +1,13 @@
-const { Event } = require('brewery-core');
+const { Operation } = require('brewery-core');
 
-class DeleteUser extends Event {
+class DeleteUser extends Operation {
   constructor({ UserRepository }) {
     super();
-    this.userRepository = UserRepository;
+    this.UserRepository = UserRepository;
   }
 
   async execute(id) {
-    const { SUCCESS, ERROR, NOT_FOUND } = this.outputs;
+    const { SUCCESS, ERROR, NOT_FOUND } = this.events;
 
     try {
       await this.UserRepository.remove(id);

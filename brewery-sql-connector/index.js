@@ -14,7 +14,7 @@ const initialize = (config) => {
   }
 
   this.sequelize = new Sequelize(config);
-  this.sequelize.DataTypes = Sequelize.DataTypes;
+  this.sequelize.DataTypes = Sequelize.DataTypes; 
   /** create sequelize instance */
   return this.sequelize;
 };

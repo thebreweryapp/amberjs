@@ -1,11 +1,11 @@
 const EventEmitter = require('events');
 const define = Object.defineProperty;
 
-class Event extends EventEmitter {
+class Operation extends EventEmitter {
 
-  static setEvents(outputs) {
-    define(this.prototype, 'outputs', {
-      value: createEvents(outputs)
+  static setEvents(events) {
+    define(this.prototype, 'events', {
+      value: createEvents(events)
     });
   }
 
@@ -18,11 +18,11 @@ class Event extends EventEmitter {
   }
 }
 
-const createEvents = (outputsArray) => {
-  return outputsArray.reduce((obj, output) => {
+const createEvents = (eventsArray) => {
+  return eventsArray.reduce((obj, output) => {
     obj[output] = output;
     return obj;
   }, Object.create(null));
 };
 
-module.exports = Event;
+module.exports = Operation;

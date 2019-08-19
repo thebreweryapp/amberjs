@@ -1,14 +1,14 @@
-const { Event } = require('brewery-core');
+const { Operation } = require('brewery-core');
 const User = require('src/domain/User');
 
-class CreateUser extends Event {
+class CreateUser extends Operation {
   constructor({ UserRepository }) {
     super();
-    this.userRepository = UserRepository;
+    this.UserRepository = UserRepository;
   }
 
   async execute(data) {
-    const { SUCCESS, ERROR, VALIDATION_ERROR } = this.outputs;
+    const { SUCCESS, ERROR, VALIDATION_ERROR } = this.events;
 
     const user = new User(data);
 

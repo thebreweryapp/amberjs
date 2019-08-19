@@ -80,7 +80,7 @@ const readFiles = (sources, obj = true) => {
  */
 const buildDataSources = (dataSourceConfigs) => {
   return dataSourceConfigs.reduce((dataSources, dataSourceConfig) => {
-    dataSources[dataSourceConfig.name] = (dataSourceFactory(dataSourceConfig));
+    dataSources[dataSourceConfig.name] = dataSourceFactory(dataSourceConfig);
     return dataSources;
   }, {});
 };

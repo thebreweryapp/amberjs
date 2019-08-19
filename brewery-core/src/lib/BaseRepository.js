@@ -1,19 +1,14 @@
 class BaseRepository {
-  constructor(model, domain) {
+  constructor(model) {
     this.model = model;
-    this.domain = domain;
   }
 
   async getAll(...args) {
-    const results = await this.model.findAll(...args);
-
-    return results.map(result => new this.domain(result));
+    return this.model.findAll(...args);
   }
 
   async getById(id) {
-    const result = await this._getById(id);
-
-    return new this.domain(result);
+    return this._getById(id);
   }
 
   async add(entity) {
@@ -26,15 +21,13 @@ class BaseRepository {
       throw error;
     }
 
-    const newEntity = await this.model.create(entity.toJSON());
-    return new this.domain(newEntity);
+    return this.model.create(entity.toJSON());
   }
 
   async remove(id) {
     const entity = await this._getById(id);
 
-    await entity.destroy();
-    return;
+    return entity.destroy();
   }
 
   async update(id, newData) {
@@ -44,20 +37,10 @@ class BaseRepository {
 
     try {
       const updatedEntity = await entity.update(newData, { transaction });
-      const domainEntity = new this.domain(updatedEntity);
-
-      const { valid, errors } = domainEntity.validate();
-
-      if(!valid) {
-        const error = new Error('ValidationError');
-        error.details = errors;
-
-        throw error;
-      }
 
       await transaction.commit();
 
-      return domainEntity;
+      return updatedEntity;
     } catch(error) {
       await transaction.rollback();
 
@@ -66,14 +49,14 @@ class BaseRepository {
   }
 
   async count() {
-    return await this.model.count();
+    return this.model.count();
   }
 
   // Private
 
   async _getById(id) {
     try {
-      return await this.model.findById(id, { rejectOnEmpty: true });
+      return this.model.findById(id, { rejectOnEmpty: true });
     } catch(error) {
       if(error.name === 'SequelizeEmptyResultError') {
         const notFoundError = new Error('NotFoundError');

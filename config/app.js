@@ -1,7 +1,13 @@
 require('dotenv').load();
 
 module.exports = {
+  /**
+   * The name of the application
+   */
   name: 'node-api-boilerplate',
+  /**
+   * The default environment
+   */
   env: process.env.NODE_ENV,
   debug: process.env.DEBUG,
   port: process.env.PORT,
@@ -12,5 +18,8 @@ module.exports = {
     repository: ['src/infra/repositories'],
     middleware: ['src/interfaces/http/middlewares'],
     router: 'src/interfaces/http/router.js'
+  },
+  server: {
+    
   }
 };
