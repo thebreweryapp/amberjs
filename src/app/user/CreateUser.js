@@ -29,4 +29,3 @@ class CreateUser extends Operation {
 CreateUser.setEvents(['SUCCESS', 'ERROR', 'VALIDATION_ERROR', 'NOT_FOUND']);
 
 module.exports = CreateUser;
-    
