@@ -1,16 +1,23 @@
-
-module.exports = ({ DbDatasource }) => {
-  const DataTypes = DbDatasource.DataTypes;
-  return DbDatasource.define('Users', {
-    id : {
-      primaryKey: true,
-      autoIncrement: true,
-      type: DataTypes.INTEGER,
-    }, name : {
-      type: DataTypes.STRING,
-    },
-  }, {
-    tableName: 'Users',
-    timestamps: true
-  });
+module.exports = {
+  name: 'UserModel',
+  datasource: 'DbDatasource',
+  definition: function(datasource, DataTypes) {
+    return datasource.define('users', {
+      id : {
+        primaryKey: true,
+        autoIncrement: true,
+        type: DataTypes.INTEGER,
+      }, name : {
+        type: DataTypes.STRING,
+      }
+    }, {
+      tableName: 'users',
+      timestamps: true,
+      classMethods: {
+        associate() {
+          // associations can be defined here
+        }
+      }
+    });
+  }
 };
