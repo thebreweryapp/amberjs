@@ -9,8 +9,17 @@ module.exports = {
    * The default environment
    */
   env: process.env.NODE_ENV,
+  /**
+   * Default debug settings
+   */
   debug: process.env.DEBUG,
+  /**
+   * port if funs on server
+   */
   port: process.env.PORT,
+  /**
+   * Source directory of resources to be autoloaded
+   */
   sources: { 
     domain: ['src/domain'],
     app: ['src/app'],
