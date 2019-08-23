@@ -30,7 +30,7 @@
     "awilix": "^4.2.2",
     "awilix-express": "^2.1.1",
     "body-parser": "^1.17.1",
-    "brewery-core": "^1.0.0",
+    "brewery-core": "^1.0.3",
     "brewery-log": "^1.1.1",
     "compression": "^1.6.2",
     "cors": "^2.8.1",
