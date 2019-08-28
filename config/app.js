@@ -27,6 +27,7 @@ module.exports = {
     model: ['src/infra/models'],
     repository: ['src/infra/repositories'],
     middleware: ['src/interfaces/http/middlewares'],
+    controller: ['src/interfaces/http/controllers'],
     router: 'src/interfaces/http/router.js'
   },
 };
