@@ -1,4 +1,4 @@
-const { brew } = require('brewery-core');
+const { brew } = require('@brewery/core');
 const config = require('config');
 
 const { server, container } = brew(config);
