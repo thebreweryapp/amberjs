@@ -13,7 +13,7 @@ class CreateUser extends Operation {
     const user = new User(data);
 
     try {
-      const newUser = await this.UserRepository.add(user);
+      const newUser = await this.UserRepository.add(user.toJSON());
 
       this.emit(SUCCESS, newUser);
     } catch(error) {
