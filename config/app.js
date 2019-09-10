@@ -20,7 +20,7 @@ module.exports = {
   /**
    * Boolean config to enable serverless
    */
-  serverless: process.env.IS_SERVERLESS,
+  serverless: process.env.IS_SERVERLESS === 'true',
   /**
    * Source directory of resources to be autoloaded
    */

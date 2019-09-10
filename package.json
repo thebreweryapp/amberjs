@@ -22,7 +22,7 @@
     "cleanup": "node scripts/cleanup.js"
   },
   "repository": {},
-  "author": "Josh Mante>",
+  "author": "Josh Mante",
   "license": "MIT",
   "dependencies": {
     "@brewery/core": "^1.0.2",
