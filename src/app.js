@@ -1,3 +1,4 @@
+require('module').Module._initPaths();
 const { brew } = require('@brewery/core');
 const config = require('config');
 const serverless = require('serverless-http');
