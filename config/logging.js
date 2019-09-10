@@ -3,12 +3,12 @@ const devLogFile = path.join(__dirname, '../logs/development.log');
 const prodLogFile = path.join(__dirname, '../logs/production.log');
 
 module.exports = {
-  development: {
+  dev: {
     transports: [
       { transport: 'File', filename: devLogFile }
     ]
   },
-  production: {
+  prod: {
     transports: [
       { transport: 'File', filename: prodLogFile }
     ]

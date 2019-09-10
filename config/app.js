@@ -4,7 +4,7 @@ module.exports = {
   /**
    * The name of the application
    */
-  name: 'node-api-boilerplate',
+  name: 'amber-framework',
   /**
    * The default environment
    */
@@ -17,6 +17,10 @@ module.exports = {
    * port if funs on server
    */
   port: process.env.PORT,
+  /**
+   * Boolean config to enable serverless
+   */
+  serverless: true,
   /**
    * Source directory of resources to be autoloaded
    */

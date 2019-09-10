@@ -1,15 +1,16 @@
 {
-  "name": "node-api-boilerplate",
+  "name": "amber-framework",
   "version": "1.0.0",
-  "description": "A boilerplate for web APIs using Node",
+  "description": "Backend NodeJS framework structured based on DDD and Clean Architecture concepts",
   "main": "./src/app.js",
   "private": true,
   "engines": {
     "node": ">=7.6.0"
   },
   "scripts": {
-    "start": "node cluster.js",
-    "dev": "cross-env NODE_PATH=. NODE_ENV=development nodemon",
+    "start": "cross-env NODE_PATH=. NODE_ENV=local nodemon",
+    "start:sls": "sls offline -s local",
+    "dev": "cross-env NODE_PATH=. NODE_ENV=local nodemon",
     "test": "npm run test:all",
     "test:all": "npm run test:unit && npm run test:features",
     "test:unit": "cross-env NODE_PATH=. NODE_ENV=test mocha --opts test/mocha.opts.unit",
@@ -18,10 +19,7 @@
     "lint": "eslint {src,test,config}/**/*.js",
     "sequelize": "cross-env NODE_PATH=. sequelize",
     "console": "cross-env NODE_PATH=. node src/interfaces/console/index.js",
-    "heroku-postbuild": "NODE_ENV=production NODE_PATH=. sequelize db:migrate --url=$DATABASE_URL",
-    "pm2": "pm2",
-    "cleanup": "node scripts/cleanup.js",
-    "create:migration": "cross-env NODE_PATH=. cd src/infra/database && cross-env NODE_PATH=. node node_modules/sequelize-auto-migrations/bin/runmigration && cd ../../../"
+    "cleanup": "node scripts/cleanup.js"
   },
   "repository": {},
   "author": "Josh Mante>",
@@ -43,7 +41,7 @@
     "http-status": "^1.0.1",
     "js-yaml": "^3.13.1",
     "method-override": "^2.3.7",
-    "pm2": "^2.4.2",
+    "serverless-http": "^2.3.0",
     "structure": "^1.5.0",
     "swagger-ui-express": "^2.0.14"
   },
@@ -58,6 +56,7 @@
     "nodemon": "^1.11.0",
     "nyc": "^11.2.1",
     "replace-in-file": "^2.5.0",
+    "serverless-offline": "^5.10.1",
     "supertest": "^3.0.0",
     "supertest-as-promised": "^4.0.2"
   }
