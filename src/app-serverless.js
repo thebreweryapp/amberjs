@@ -2,7 +2,8 @@ require('module').Module._initPaths();
 const { brew } = require('@brewery/core');
 const config = require('config');
 
-module.exports = (event, context, callback) => {
+module.exports.handler = (event, context, callback) => {
+
   brew(config, async brewed => {
     const app = brewed.getServerless();
     try {
@@ -12,4 +13,5 @@ module.exports = (event, context, callback) => {
       callback(err);
     }
   });
+  
 };

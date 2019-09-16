@@ -17,7 +17,7 @@ custom:
 
 functions:
   app:
-    handler: src/app.serverless
+    handler: src/app-serverless.handler
     events:
       - http:
           path: /{proxy+}
