@@ -1,4 +1,4 @@
-const { Operation } = require('@brewery/core');
+const { Operation } = require('@amberjs/core');
 
 class ListUsers extends Operation {
   constructor({ UserRepository }) {

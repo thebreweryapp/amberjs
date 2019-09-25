@@ -1,5 +1,5 @@
 require('module').Module._initPaths();
-const { brew } = require('@brewery/core');
+const { brew } = require('@amberjs/core');
 const config = require('config');
 
 module.exports.handler = (event, context, callback) => {

@@ -1,5 +1,4 @@
 const { Router, static } = require('express');
-const statusMonitor = require('express-status-monitor');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const compression = require('compression');
@@ -11,11 +10,6 @@ const openApiDoc = require('./openApi.json');
 module.exports = ({ config, containerMiddleware, loggerMiddleware, errorHandler, openApiMiddleware }) => {
   const router = Router();
   router.use(containerMiddleware);
-
-  /* istanbul ignore if */
-  if(config.env === 'development') {
-    router.use(statusMonitor());
-  }
 
   /* istanbul ignore if */
   if(config.env !== 'test') {
