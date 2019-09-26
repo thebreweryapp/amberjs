@@ -3,7 +3,8 @@ const { brew } = require('@amberjs/core');
 const config = require('config');
 
 module.exports.handler = (event, context, callback) => {
-  brew(config, async brewed => {
+  brew(config, async (err, brewed) => {
+    if (err) throw err;
     const app = brewed.getServerless();
     try {
       const res = await app(event, context);
@@ -12,5 +13,4 @@ module.exports.handler = (event, context, callback) => {
       callback(err);
     }
   });
-  
 };
