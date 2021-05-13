@@ -39,18 +39,18 @@ Both the application and Sequelize have command-line tools to make it easy to wo
 
 ## Prerequisites
 First, you’ll need to install a supported version of Node:
-- Node.js at v8.9 or greater
+- Node.js LTS v12.x or greater
 - We recommend to use NVM (node version manager)
 
 Additionally, this guide assumes that you are comfortable with certain technologies, languages and concepts.
-- JavaScript (ES6)
+- JavaScript (CommonJS & ES6)
 - REST
 
 Lastly, you’ll need to install the Brewery CLI toolkit:
 
 ```npm i -g @brewery/cli```
 
-For more info, see [The AmberJS documentation](https://docs.thebrewery.dev/amberjs/getting-started)
+For more info, see [The AmberJS documentation](https://docs.thebrewery.app/amberjs/getting-started)
 
 ## Tech
 
